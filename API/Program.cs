@@ -1,6 +1,10 @@
+using API.Errors;
+using API.Extentions;
+using API.Middleware;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -10,20 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<StoreContext>(opt => 
-{
-    opt.UseSqlite(connectionString: builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
-builder.Services.AddScoped<IProductRepository, PorductRepository>();
-builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+builder.Services.AddApplicationService(builder.Configuration);
 var app = builder.Build();
-
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
