@@ -1,10 +1,14 @@
 <header class="d-flex flex-row align-items-center justify-content-between p-2 px-4 mb-1 
 bg-white border-bottom fixed-top shadow-sm" >
-<img src="/assets/images/logo.png" alt="logo" style="max-height: 70px;">
+<img src="/assets/images/logo.png" alt="logo" class="logo" routerLink="/" style="max-height: 70px;">
       <nav class="my-2 text-uppercase fs-3">
-        <a class="p-2 text-dark text-decoration-none" href="#">Home</a>
-        <a class="p-2 text-dark text-decoration-none" href="#">Shop</a>
-        <a class="p-2 text-dark text-decoration-none" href="#">Contact</a>
+        <a class="p-2 "
+        [routerLinkActiveOptions]="{exact:true}"
+         routerLinkActive="active"
+          routerLink="/">
+          Home</a>
+        <a class="p-2 " routerLinkActive="active" routerLink="/shop" >Shop</a>
+        <a class="p-2 " routerLinkActive="active" routerLink="/Contact">Contact</a>
     
       </nav>
 <div class="d-flex align-items-center  ">

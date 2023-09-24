@@ -24,6 +24,9 @@ export class ShopService  {
      if(ShopParams.search) params =params.append('search',ShopParams.search);
     return this.http.get<pagination<Product[]>>(this.baseUrl+'Products',{params:params});
   }
+  getProduct(id:number){
+    return this.http.get<Product>(this.baseUrl+'Products/'+id);
+  }
   getBrands(){
     return this.http.get<Brand[]>(this.baseUrl+'Products/brands')
   }
