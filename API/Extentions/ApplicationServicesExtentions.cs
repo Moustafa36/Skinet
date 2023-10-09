@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace API.Extentions
 {
@@ -24,6 +25,7 @@ namespace API.Extentions
 });
 
         services.AddScoped<IProductRepository, PorductRepository>();
+        services.AddScoped<IBasketRepository,BasketRepository>();
         services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.Configure<ApiBehaviorOptions>(options=> 
@@ -41,6 +43,11 @@ namespace API.Extentions
    
 }
 );
+services.AddSingleton<IConnectionMultiplexer>(c=> 
+                            {  var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
+                               return ConnectionMultiplexer.Connect(options);
+
+                                                        } );
 services.AddCors(opt=>
 {
     opt.AddPolicy("CorsPolicy", policy => 
